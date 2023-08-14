@@ -1,0 +1,70 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "application.fullname" . }}
+  namespace: {{ .Values.namespace }}
+  annotations:
+{{ toYaml .Values.annotations | indent 4 }}
+  labels:
+{{ include "application.labels" . | indent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }} # Anzahl der zu startenden Instanzen
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ include "application.name" . }}
+      app.kubernetes.io/instance: {{ .Release.Name }}
+  template:
+    metadata:
+      annotations:
+      {{- if .Values.vault.enabled }}
+{{ include "application.vault.secrets" . | indent 8 }}
+      {{- end }}
+        # forces update of deployment on configmap change
+        # for additional update checks add more annotations of corresponding file
+        checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}   
+      labels:
+        app.kubernetes.io/name: {{ include "application.name" . }}
+        app.kubernetes.io/instance: {{ .Release.Name }}
+        app: {{ include "application.name" . }}
+        version: "{{ .Chart.AppVersion }}-{{ .Values.image.tag }}"
+    spec:
+    {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+      volumes:
+      - name: application-config
+        configMap:
+          name: {{ include "application.fullname" . }}
+          items:
+          - key: application.properties
+            path: application.properties 
+      containers: # zu startende Container
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports: # Namen für die bereitgestellten Ports (kann alternativ zu den Nummern verwendet werden)
+          - containerPort: 8080
+            name: application
+          env:
+          - name: SPRING_CONFIG_LOCATION
+            value: /config/application.properties {{ include "application.vault.properties" . }}
+          volumeMounts:
+          - name: application-config
+            mountPath: "/config"
+            readOnly: true
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+      serviceAccountName: {{ include "application.fullname" . }}-service-account # verwendeter ServiceAccount (siehe "serviceaccount.yaml")
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+    {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+    {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}

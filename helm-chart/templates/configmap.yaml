@@ -1,0 +1,8 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: {{ include "application.fullname" . }}
+  namespace: {{ .Values.namespace }}
+data:
+  application.properties: |-
+{{ .Files.Get (print "application-" .Values.envSuffix .Values.appSuffix ".properties") | indent 4}}

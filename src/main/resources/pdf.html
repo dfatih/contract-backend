@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <meta content="IE=9; IE=8; IE=7; IE=EDGE" http-equiv="X-UA-Compatible"/>
+    <meta charset="utf-8"/>
+    <style type="text/css">
+        body, html {
+            background: #ffffff;
+            font-family: Arial, sans-serif;
+            margin: 2.5cm 0cm 1.27cm 0cm;
+            display: block;
+            height: 100%;
+            width: 100%;
+            box-shadow: none;
+        }
+
+        page {
+            background: white;
+            display: block;
+            box-shadow: none;
+        }
+
+        page[size="A4"] {
+            width: 21cm;
+            height: 29.7cm;
+        }
+
+        @media print {
+            body,
+            page {
+                margin: 0;
+                box-shadow: none;
+            }
+        }
+
+        table.page {
+            width: 21cm;
+            height: 29.7cm;
+            background: white;
+            margin: 0 auto;
+            margin-bottom: 0.5cm;
+        }
+
+        .sidebar-right {
+            padding-right: 2.5cm;
+        }
+
+        .sidebar-left {
+            padding-left: 2.5cm;
+        }
+
+        .content {
+            width: 16cm;
+            height: 29.7cm;
+        }
+
+        #content {
+            height: 29.7cm;
+        }
+
+        .page table {
+            width: 16cm;
+            height: auto;
+        }
+
+        tbody {
+            vertical-align: top;
+        }
+
+        td {
+            padding: 0;
+            text-align: justify;
+        }
+
+        tr .title {
+            text-align: center;
+            padding-top: 1cm;
+        }
+
+        span {
+            font-size: 9pt;
+            font-family: Arial, sans-serif;
+            text-align: justify;
+        }
+
+        table {
+            border-spacing: 0;
+            border-collapse: separate;
+        }
+
+        .header {
+            width: 4cm;
+        }
+
+        .small-space {
+            padding-bottom: 0.5cm;
+            text-align: left;
+        }
+
+        .arbeitgeber {
+            padding: 0.5cm 0cm;
+        }
+
+        .title {
+            padding-top: 1.5cm;
+            padding-bottom: 1cm;
+            text-align: center;
+            vertical-align: center;
+        }
+
+        .textHeader {
+            padding-bottom: 0.8cm;
+        }
+
+        .paragraphTitle {
+            font-weight: bold;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding-bottom: 0.5cm;
+        }
+
+        .paragraphAbs {
+            font-size: 10pt;
+            font-family: Arial, sans-serif;
+            padding-bottom: 0.5cm;
+            text-align: justify;
+            line-height: 100%;
+        }
+
+        .firstParagraphAbs {
+            font-size: 10pt;
+            font-family: Arial, sans-serif;
+            text-align: justify;
+            padding-bottom: 0.5cm;
+            line-height: 100%;
+        }
+
+        .insertedText {
+            font-weight: bold;
+        }
+
+        #sign {
+            page-break-inside: avoid !important;
+        }
+
+        table, tr, td, th, tbody, thead, tfoot {
+            page-break-inside: avoid !important;
+            font-family: Arial, sans-serif;
+            border: none;
+        }
+    </style>
+</head>
+
+<body>
+<table class="page" id="page1">
+    <tbody>
+    <tr>
+        <td>
+
+            <table class="template">
+                <tbody>
+                <tr>
+                    <td class="content">
+
+                        <table id="content">
+                            <tbody>
+                            <tr>
+                                <td>
+                                    <table id="title">
+                                        <tbody>
+                                        <tr>
+                                            <td class="title">
+                                                <span style="font-size: 24px; font-weight: bold">
+                                                Arbeitsvertrag
+                                                </span>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+
+                                    <table id="zwischenDer">
+                                        <tbody>
+                                        <tr>
+                                            <td class="header">
+                                              <span>
+                                                Zwischen der
+                                              </span>
+                                            </td>
+                                            <td>
+                                                <span style="font-weight: bold" th:text="${company.getCompanyName()}">workplace</span>
+                                                <br>
+                                                <span style="font-weight: bold" th:text="${contract.getLocation()}">location</span>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                    <table id="Arbeitgeber">
+                                        <tbody>
+                                        <tr>
+                                            <td class="header">
+                                            </td>
+                                            <td class="arbeitgeber">
+                                              <span>
+                                                als Arbeitgeber
+                                              </span>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                    <table id="Name">
+                                        <tbody>
+                                        <tr>
+                                            <td class="header">
+                                              <span>
+                                                und
+                                              </span>
+                                            </td>
+                                            <td colspan="2" class="small-space">
+                                              <span style="font-weight: bold" th:text="${candidateFirstRow}">
+                                                Herrn Max Mustermann
+                                              </span> <br>
+                                                <span>
+                                                Anschrift:
+                                                </span>
+                                                <span style="font-weight: bold" th:utext="${candidateSecondRow}">
+                                                    Musterstraße
+                                              </span>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                    <table id="Arbeitnehmer">
+                                        <tbody>
+                                        <tr>
+                                            <td class="header"></td>
+                                            <td class="arbeit" style="width: 5.5cm">
+                                              <span>
+                                               als Arbeitnehmer
+                                              </span>
+                                            </td>
+                                            <td class="small-space" style="font-size: 8pt; font-style: italic">
+                                                - die männliche Bezeichnung „Arbeitnehmer“ wird aus Gründen der
+                                                sprachlichen Vereinfachung gewählt; die Bestimmungen dieses Vertrages
+                                                gelten ungeachtet dieser Bezeichnung für Beschäftigte jeden Geschlechts
+                                                -
+
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                    <table class="textHeader">
+                                        <tbody>
+                                        <tr>
+                                            <td>
+                                                <span>wird folgender Arbeitsvertrag geschlossen:</span>
+                                                <br/>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                    <div th:each="para : ${insertableContractParagraphs}">
+                                        <table>
+                                            <tbody>
+                                            <tr>
+                                                <th style="text-align: center;line-height: 100%;">
+                                                    <span class="paragraphTitle"
+                                                          th:text="'§ ' + ${para.getParagraphNumber() + ' ' + para.getParagraphTitle()}">number</span>
+                                                    <br/><br/>
+                                                </th>
+                                            </tr>
+                                            <tr>
+                                                <td class="firstParagraphAbs">
+                                                    <span th:utext="${para.getFirstPassage()}"></span>
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                        <table th:each="abs : ${para.getParagraphPassages()}">
+                                            <tr>
+                                                <td class="paragraphAbs">
+                                                    <span th:utext="${abs}">- entfällt -</span>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+
+                                    <table id="sign" style="padding-top: 1.5cm">
+                                        <tbody>
+                                        <tr>
+                                            <td style="font-size: 9pt" th:text="${placeOfSignature + ', ' + dateOfSignature}">
+                                                Schönefeld,
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="5" style="padding: 1cm 0cm"></td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2"
+                                                style="font-size: 9pt; width: 7.5cm; border-top: 1pt solid black !important; padding-top: 0.1cm; padding-bottom: 0;"
+                                                th:text="${firstSignee.getPosition()}">
+                                                Arbeitgeber
+                                            </td>
+                                            <td style="padding: 0cm 1cm;"></td>
+                                            <td colspan="2"
+                                                style="font-size: 9pt; width: 7.5cm; border-top: 1pt solid black !important; padding-top: 0.1cm; padding-bottom: 0;"
+                                                th:text="Arbeitnehmer">
+                                                Arbeitnehmer
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2" style="font-size: 9pt; width: 7.5cm;  padding-bottom: 0;"
+                                                th:text="${company.getCompanyName()}">Unternehmen
+                                            </td>
+                                            <td style="padding: 0cm 1cm;"></td>
+                                            <td colspan="2"
+                                                style="font-size: 9pt; width: 7.5cm;  padding-bottom: 0;"
+                                                th:text="${candidate.getFirstName() + ' ' + candidate.getLastName()}">
+                                                Arbeitnehmer
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2"
+                                                style="font-size: 9pt; width: 7.5cm;  padding-bottom: 0;"
+                                                th:text="${firstSignee.getName()}">
+                                                Arbeitgeber
+                                            </td>
+                                            <td style="padding: 0cm 1cm;"></td>
+                                            <td colspan="2" style="width: 7.5cm; padding-bottom: 0;"></td>
+                                        </tr>
+                                        <tr th:each="signee: ${signees}" th:if="${signees.size() >= 1}">
+                                            <td colspan="5">
+                                                <table>
+                                                    <tbody>
+                                                    <tr>
+                                                        <td colspan="5" style="padding: 1cm 0cm"></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td colspan="2"
+                                                            style="font-size: 9pt; width: 7.5cm; border-top: 1pt solid black !important; padding-top: 0.1cm"
+                                                            th:text="${signee.getPosition()}">
+                                                            Arbeitgeber
+                                                        </td>
+                                                        <td style="padding: 0cm 1cm;"></td>
+                                                        <td colspan="2" style="width: 7.5cm;padding-top: 0.1cm"></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td colspan="2"
+                                                            style="font-size: 9pt; width: 7.5cm;  padding-bottom: 0;"
+                                                            th:text="${company.getCompanyName()}">Unternehmen
+                                                        </td>
+                                                        <td style="padding: 0cm 1cm;"></td>
+                                                        <td colspan="2" style="width: 7.5cm;padding-top: 0.1cm"></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td colspan="2"
+                                                            style="font-size: 9pt; width: 7.5cm;  padding-bottom: 0;"
+                                                            th:text="${signee.getName()}">
+                                                            Arbeitgeber
+                                                        </td>
+                                                        <td style="padding: 0cm 1cm;"></td>
+                                                        <td colspan="2" style="width: 7.5cm;padding-top: 0.1cm"></td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                            </td>
+
+                                        </tr>
+
+                                        </tbody>
+                                    </table>
+                        </table>
+
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+            <!--<table>
+                <tbody>
+                <tr>
+                    <td class="footer">
+                        <div th:replace="/footer :: footer">footer</div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>-->
+
+        </td>
+    </tr>
+    </tbody>
+</table>
+</body>
+
+</html>

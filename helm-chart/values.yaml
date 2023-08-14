@@ -1,0 +1,65 @@
+# Declare variables to be passed into your templates.
+ 
+appSuffix: "" # optionaler Suffix z.B. für Branch-Namen oder zusätzliche Umgebungen (benötigt application.properties mit Suffix <-envSuffix-appSuffix>)
+envSuffix: "dev" # suffix für die Umgebung (dev, stage, prod), notwendig für die verwendete properties-Datei
+# projectAlias: "" # alternativer DNS-Name für das Projekt, z.B. kann hier "urlaub" statt "urlaubsschein-frontend" stehen
+ 
+replicaCount: 1 # Anzahl der zu startenden Instanzen
+ 
+image:
+  repository: ${CI_REGISTRY}/${CI_PROJECT_PATH} # Docker-Image
+  tag: ${CI_PIPELINE_ID} # Tag/Version des Docker-Images (=Buildnummer aus GitLab)
+  pullPolicy: Always # Image soll nicht gecached werden
+ 
+imagePullSecrets: [] # keine Credentials für Nexus notwendig
+nameOverride: ""
+fullnameOverride: ""
+ 
+service: # K8s-Loadbalancer für die gestarteten Instanzen
+  type: ClusterIP # Art der Erreichbarkeit: nur innerhalb des Clusters (Alternativen: NodePort, HostPort, ExternalService)
+  port: 80 # Port auf dem die Anwendung über den LoadBalancer erreichbar ist (das Portmapping von 8080 nach 80 erfolgt in der Datei "service.yaml")
+ 
+ingress: # Herstellen der Erreichbarkeit der Anwendung über einen DNS-Namen
+  enabled: true # App soll von außen erreichbar sein
+  environment:
+    disabledInProd: false # verbirgt die Prod-Umgebung im DNS-Namen, z.B. statt "urlaub.prod.kriegerit.de" wird ein DNS-Eintrag "urlaub.kriegerit.de" erzeugt
+  host:
+    # Domainname, unter dem die App erreichbar ist, Form: https://<applicationName>.<environment>.<domain>
+    applicationName: ${var_namespace}
+    environment: ${var_environment}
+    domain: kriegerit.de
+
+vault:
+  enabled: true
+  secretEngine:
+    - name: key-value
+      secrets:
+        - name: vault.postgres
+        - name: vault.transit-admin
+
+annotations:
+  contact.krieger.de/product-owner: benjamin.wutzke@kriegerdigital.de
+  contact.krieger.de/developers: bastian.koehler@kriegerdigital.de, fatih.doenmez@kriegerdigital.de, bora-bey.sarikaya@kriegerdigital.de, elso.dittfeld@kriegerdigital.de
+  contact.krieger.de/channel: https://rocketchat.kriegerit.de/group/avkonfigurator
+  documentation.krieger.de/confluence: https://confluence.kriegerit.de/x/3gDOJQ
+  krieger.de/git: https://git.kriegerit.de/${CI_PROJECT_PATH}
+  krieger.de/dependencies: kubernetes, postgres
+
+resources:
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  limits:
+    cpu: 4000m
+    memory: 512Mi
+  requests:
+    cpu: 100m
+    memory: 300Mi
+ 
+# Möglichkeit der Festlegung spezieller Eigenschaften von worker-Nodes, auf denen die App laufen muss, z.B. App benötigt vorhandene GPU
+nodeSelector: {}
+ 
+tolerations: []
+ 
+affinity: {}

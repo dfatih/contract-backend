@@ -1,0 +1,6 @@
+apiVersion: v2
+appVersion: "${POM_VERSION}"
+description: ${CI_PROJECT_NAME}
+name: ${CI_PROJECT_NAME}
+version: ${CI_PIPELINE_ID}
+type: application

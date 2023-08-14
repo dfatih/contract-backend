@@ -1,0 +1,22 @@
+@startuml
+title decrypt-contract
+
+actor user
+participant "contract-generator-frontend" as frontend
+participant "contract-generator-backend" as contract
+participant vault
+database PostgreSQL
+
+user -> frontend
+frontend -> contract: get contract
+contract -> PostgreSQL: get encrypted contract
+PostgreSQL --> contract
+contract -> vault: login at vault with JWT token
+vault --> contract
+loop
+    contract -> vault: decrypt contract part \n with vault transit engine
+    vault --> contract
+end
+contract --> frontend: return decrypted contract
+
+@enduml

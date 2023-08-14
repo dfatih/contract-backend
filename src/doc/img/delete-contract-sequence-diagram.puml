@@ -1,0 +1,22 @@
+@startuml
+title delete-contract
+
+actor user
+participant "contract-generator-frontend" as frontend
+participant "contract-generator-backend" as contract
+participant vault
+database PostgreSQL
+
+user -> frontend
+frontend -> contract: delete contract
+
+contract -> vault: login at vault with "app_vault_transit_admin"
+vault --> contract
+contract -> vault: delete path  for contract
+vault --> contract
+
+contract -> PostgreSQL: delete contract
+PostgreSQL --> contract
+contract --> frontend: return status message
+
+@enduml

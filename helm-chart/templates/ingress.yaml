@@ -1,0 +1,47 @@
+{{- if .Values.ingress.enabled -}}
+{{- $fullName := include "application.fullname" . -}}
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: {{ $fullName }}-ingress-https
+  namespace: {{ .Values.namespace }}
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`{{ include "application.ingress.host" . }}`)
+      kind: Rule
+      middlewares: # automatisches Vorschalten eines Login über den Oauth2-Service
+        - name: oauth2-middleware
+      services:
+        - kind: Service
+          name: {{ $fullName }}
+          port: {{ .Values.service.port }}
+# bei Aktivierung der oauth2-middleware muss auch der nachfolgende match einkommentiert werden
+    - match: "Method(`OPTIONS`) && Host(`{{ include "application.ingress.host" . }}`)"
+      kind: Rule
+      services:
+        - kind: Service
+          name: {{ $fullName }}
+          port: {{ .Values.service.port }}
+  tls: {}
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: {{ $fullName }}-ingress-http
+  namespace: {{ .Values.namespace }}
+spec:
+  entryPoints:
+    - web
+  routes:
+    - match: Host(`{{ include "application.ingress.host" . }}`)
+      kind: Rule
+      middlewares:
+        - name: tls-redirect
+          namespace: traefik
+      services:
+        - kind: Service
+          name: {{ $fullName }}
+          port: {{ .Values.service.port }}
+{{- end }}

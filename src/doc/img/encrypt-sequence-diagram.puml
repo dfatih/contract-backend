@@ -1,0 +1,32 @@
+@startuml
+title encrypt-contract
+
+actor user
+participant "contract-generator-frontend" as frontend
+participant "contract-generator-backend" as contract
+participant vault
+database PostgreSQL
+
+user -> frontend
+frontend -> contract: save contract
+
+contract -> vault: login at vault with "app_vault_transit_admin"
+vault --> contract
+    contract -> vault: check if path exists for contract
+    vault --> contract
+alt no
+    contract -> vault: create path  for contract
+    vault --> contract
+end
+
+contract -> vault: login at vault with JWT token
+vault --> contract
+loop
+    contract -> vault: encrypt contract part \n with vault transit engine
+    vault --> contract
+end
+contract -> PostgreSQL: save encrypted contract
+PostgreSQL --> contract
+contract --> frontend: return status message
+
+@enduml

@@ -1,0 +1,25 @@
+image: maven.kriegerit.de:18444/krieger/infrastructure/docker-base-images/base
+
+stages:
+  - version
+  - build
+  - package
+  - deploy
+
+include:
+
+  - project: 'krieger/infrastructure/ci-templates'
+    ref: 3.0.0
+    file: 'build.maven-snapshot-and-release-jdk11.gitlab-ci.yml'
+
+  - project: 'krieger/infrastructure/ci-templates'
+    ref: 3.0.0
+    file: 'package.docker-create-and-push.gitlab-ci.yml' 
+
+  - project: 'krieger/infrastructure/ci-templates'
+    ref: 3.0.0
+    file: 'package-and-deploy.helm-create-and-release.gitlab-ci.yml' 
+
+  - project: 'krieger/infrastructure/ci-templates' 
+    ref: 3.0.0
+    file: 'deploy.k8s-auto-deploy-only-master-and-develop.gitlab-ci.yml'
